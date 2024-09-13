@@ -5,12 +5,15 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebConfig implements WebMvcConfigurer
-{
+public class WebConfig implements WebMvcConfigurer {
 
-    public void addCorsMappings(CorsRegistry registry)
-    {
-        registry.addMapping("/**").allowedOrigins("http://localhost:9998").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*")
-            .allowCredentials(true);
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**") // Permite CORS em todas as rotas
+                .allowedOrigins("http://localhost:9998") // Permite o domínio específico do frontend
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Permite os métodos HTTP
+                .allowedHeaders("*") // Permite todos os cabeçalhos
+                .allowCredentials(true); // Permite o envio de credenciais (cookies, tokens)
     }
+
 }

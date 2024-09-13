@@ -21,6 +21,20 @@ Vue.filter('formatDate', function(value) {
 import api from './api';  // Importe a instância de API
 Vue.prototype.$api = api;// Adicione a instância da API ao protótipo do Vue
 
+
+api.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`; // Adiciona o token no cabeçalho
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+
 new Vue({
     router,
     vuetify,
