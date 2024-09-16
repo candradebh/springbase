@@ -17,7 +17,7 @@
           <v-card class="mx-auto" max-width="400">
             <v-card-title>Total Conectores</v-card-title>
             <v-card-text class="d-flex justify-center align-center">
-              <span class="display-2">{{ totalConnectors }}</span>
+              <span class="display-2">{{ 0 }}</span>
             </v-card-text>
           </v-card>
         </v-col>
@@ -44,9 +44,7 @@ export default {
         .then(response => {
           this.tasks = response.data;
           this.totalTasks = this.tasks.length;
-          this.totalConnectors = this.clientes.reduce((sum, item) => {
-            return sum + item.active;
-          }, 0);
+          
         })
         .catch(error => {
           console.error('Error fetching data:', error);

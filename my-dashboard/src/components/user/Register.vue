@@ -9,10 +9,10 @@
 
           <v-card-text>
             <v-form @submit.prevent="registerUser">
+              
+              <v-text-field label="Name" v-model="name" required></v-text-field>
               <v-text-field label="Username" v-model="username" required></v-text-field>
-
               <v-text-field label="Email" v-model="email" required></v-text-field>
-
               <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
 
               <v-btn type="submit" color="primary">Registrar</v-btn>
@@ -29,6 +29,7 @@ export default {
   name: 'RegisterPage',
   data() {
     return {
+      name: '',
       username: '',
       email: '',
       password: '',
@@ -38,6 +39,7 @@ export default {
     async registerUser() {
       try {
         const response = await this.$api.post('/users/register', {
+          name: this.name,
           username: this.username,
           email: this.email,
           password: this.password, // Certifique-se de que está enviando a senha

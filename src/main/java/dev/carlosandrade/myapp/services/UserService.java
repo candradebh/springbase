@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserService {
 
@@ -18,6 +16,7 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     public UserEntity registerUser(UserEntity user) {
         if (userRepository.existsByUsername(user.getUsername())) {
@@ -34,36 +33,38 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // Atualizar perfil do usuário
-    public UserEntity updateProfile(Long userId, UpdateProfileDTO updateProfileDTO) {
-        Optional<UserEntity> optionalUser = userRepository.findById(userId);
-
-        if (optionalUser.isPresent()) {
-            UserEntity user = optionalUser.get();
-            user.setName(updateProfileDTO.getName());
-            user.setEmail(updateProfileDTO.getEmail());
-            return userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuário não encontrado");
-        }
+    // Obter o usuário pelo username
+    public UserEntity getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
-    public void changePassword(Long userId, ChangePasswordDTO changePasswordDTO) {
-        Optional<UserEntity> optionalUser = userRepository.findById(userId);
-
-        if (optionalUser.isPresent()) {
-            UserEntity user = optionalUser.get();
-
-            // Verifica se a senha antiga corresponde à armazenada
-            if (passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
-                user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
-                userRepository.save(user);
-            } else {
-                throw new RuntimeException("Senha antiga incorreta");
-            }
-        } else {
+    public UserEntity updateProfileByUsername(String username, UpdateProfileDTO updateProfileDTO) {
+        UserEntity user = getUserByUsername(username);
+        if (user == null) {
             throw new RuntimeException("Usuário não encontrado");
         }
+
+        // Atualizar os dados de perfil
+        user.setName(updateProfileDTO.getName());
+        user.setEmail(updateProfileDTO.getEmail());
+
+        return userRepository.save(user);
+    }
+
+    public void changePasswordByUsername(String username, ChangePasswordDTO changePasswordDTO) {
+        UserEntity user = getUserByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("Usuário não encontrado");
+        }
+
+        // Verifica a senha antiga
+        if (!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
+            throw new RuntimeException("Senha antiga incorreta");
+        }
+
+        // Atualizar a nova senha
+        user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
+        userRepository.save(user);
     }
 }
 

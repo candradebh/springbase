@@ -97,7 +97,9 @@ export default {
       this.$router.push('/settings');
     },
     logout() {
-      console.log("Usuário deslogado");
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      this.$router.push("/login"); 
     },
   },
   created() {
