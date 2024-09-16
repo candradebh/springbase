@@ -5,9 +5,9 @@
         <!-- Card para Total de Clientes -->
         <v-col cols="12" sm="6" md="4">
           <v-card class="mx-auto" max-width="400">
-            <v-card-title>Total Clientes</v-card-title>
+            <v-card-title>Total Tasks</v-card-title>
             <v-card-text class="d-flex justify-center align-center">
-              <span class="display-2">{{ totalClientes }}</span>
+              <span class="display-2">{{ totalTasks }}</span>
             </v-card-text>
           </v-card>
         </v-col>
@@ -30,8 +30,8 @@
 export default {
   data() {
     return {
-      clientes: [],
-      totalClientes: 0,
+      tasks: [],
+      totalTasks: 0,
       totalConnectors: 0
     };
   },
@@ -40,16 +40,16 @@ export default {
   },
   methods: {
     fetchData() {
-      this.$api.get('/connectors/grouped-by-client')
+      this.$api.get('/scheduled-tasks')
         .then(response => {
-          this.clientes = response.data;
-          this.totalClientes = this.clientes.length;
-          this.totalConnectors = this.clientes.reduce((sum, client) => {
-            return sum + client.connectorCount;
+          this.tasks = response.data;
+          this.totalTasks = this.tasks.length;
+          this.totalConnectors = this.clientes.reduce((sum, item) => {
+            return sum + item.active;
           }, 0);
         })
         .catch(error => {
-          console.error('Error fetching connector summaries:', error);
+          console.error('Error fetching data:', error);
         });
     },
     viewDetails(clientName) {
