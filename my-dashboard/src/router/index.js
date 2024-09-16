@@ -9,6 +9,7 @@ import TableMetadataIndex from '@/components/tablemetadata/TableMetadataIndex.vu
 import TableMetadataEdit from '@/components/tablemetadata/TableMetadataEdit.vue';
 import NotificationRecipientIndex from '@/components/recipients/NotificationRecipientIndex.vue';
 import NotificationLogIndex from '@/components/notifications/NotificationLogIndex.vue';
+import Profile from '@/components/user/Profile.vue';
 
 Vue.use(Router);
 
@@ -30,6 +31,12 @@ const routes = [
     name: 'RegisterPage',
     component: Register,
     meta: { requiresAuth: false, hideNavbar: true }
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+    meta: { requiresAuth: true }
   },
   {
     path: '/services',
