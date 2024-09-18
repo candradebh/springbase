@@ -4,7 +4,7 @@ import router from './router';
 import moment from 'moment';
 import vuetify from './plugins/vuetify';
 import { loadFonts } from './plugins/webfontloader';
-
+import store from './store/store';
 
 
 loadFonts();
@@ -21,6 +21,7 @@ import api from './api';  // Importe a instância de API
 Vue.prototype.$api = api;// Adicione a instância da API ao protótipo do Vue
 
 new Vue({
+    store,
     router,
     vuetify,
     render: h => h(App)
